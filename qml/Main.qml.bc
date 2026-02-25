@@ -1,0 +1,126 @@
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Material
+
+ApplicationWindow {
+    visible: true
+    width: 450
+    height: 520
+    title: "OpenConnect GUI"
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
+
+    property bool connected: false
+    property bool autoScroll: true
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: 20
+        spacing: 14
+
+        Label {
+            text: "OpenConnect Client"
+            font.pixelSize: 22
+            font.bold: true
+            horizontalAlignment: Text.AlignHCenter
+            Layout.fillWidth: true
+        }
+
+        TextField {
+            id: serverField
+            Layout.fillWidth: true
+            placeholderText: "Server URL"
+        }
+
+        TextField {
+            id: userField
+            Layout.fillWidth: true
+            placeholderText: "Username"
+        }
+
+        TextField {
+            id: passField
+            Layout.fillWidth: true
+            placeholderText: "Password"
+            echoMode: TextInput.Password
+        }
+
+        TextField {
+            id: extraArgs
+            Layout.fillWidth: true
+            placeholderText: "Extra arguments (optional)"
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 10
+
+            Button {
+                id: connectBtn
+                Layout.fillWidth: true
+                text: connected ? "Disconnect" : "Connect"
+                Material.background: connected ? Material.Red : Material.Green
+
+                onClicked: {
+                    if (!connected) {
+                        vpn.connectVPN(
+                            serverField.text,
+                            userField.text,
+                            passField.text,
+                            extraArgs.text
+                        )
+                    } else {
+                        vpn.disconnectVPN()
+                    }
+                }
+            }
+
+            Button {
+                id: cleanBtn
+                text: "Clean"
+                Layout.preferredWidth: 100
+                onClicked: logArea.text = ""
+            }
+        }
+
+        CheckBox {
+            id: autoScrollCheck
+            text: "Auto-scroll"
+            checked: true
+            onCheckedChanged: autoScroll = checked
+        }
+
+        ScrollView {
+            id: scrollArea
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
+
+            TextArea {
+                id: logArea
+                readOnly: true
+                wrapMode: TextArea.Wrap
+                textFormat: TextEdit.PlainText
+            }
+        }
+    }
+
+    Connections {
+        target: vpn
+
+        function onLogUpdated(text) {
+            logArea.text += text
+
+            if (autoScroll) {
+                scrollArea.flickableItem.contentY =
+                        scrollArea.flickableItem.contentHeight
+            }
+        }
+
+        function onConnectionStateChanged(state) {
+            connected = state
+        }
+    }
+}
