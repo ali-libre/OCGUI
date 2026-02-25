@@ -22,6 +22,7 @@ qt_add_qml_module(appOCGUI
         SOURCES profilemanager.cpp profilemanager.h
         QML_FILES qml/VPNTabel.qml
         QML_FILES qml/ProfileDetail.qml
+        SOURCES systemproxymanager.cpp systemproxymanager.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

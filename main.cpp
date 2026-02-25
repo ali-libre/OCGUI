@@ -4,6 +4,7 @@
 
 #include "vpnmanager.h"
 #include "profilemanager.h"
+#include "systemproxymanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +14,8 @@ int main(int argc, char *argv[])
 
     VPNManager vpnManager;
     ProfileManager profileManager;
+    SystemProxyManager systemProxy;
+    engine.rootContext()->setContextProperty("systemProxy", &systemProxy);
     engine.rootContext()->setContextProperty("vpn", &vpnManager);
     engine.rootContext()->setContextProperty("profiles", &profileManager);
 

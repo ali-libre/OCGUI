@@ -102,5 +102,18 @@ Rectangle {
 
             onClicked: profileDetail.connectRequested()
         }
+
+        CheckBox {
+            id: systemProxyCheck
+            text: "System proxy"
+            Layout.leftMargin: 20
+            checked: systemProxy.enabled
+            onToggled: {
+                if (checked)
+                    systemProxy.enableSystemProxy("127.0.0.1", 8080, "127.0.0.1", 1080)
+                else
+                    systemProxy.disableSystemProxy()
+            }
+        }
     }
 }

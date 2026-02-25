@@ -100,7 +100,6 @@ ApplicationWindow {
 
         }
 
-        // لاگ پایین
         Rectangle {
             id: logPanel
             Layout.fillWidth: true
